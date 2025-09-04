@@ -1,0 +1,99 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f1f1f1;
+    margin: 0;
+}
+
+.login-container {
+    width: 300px;
+    margin: 100px auto;
+    padding: 30px;
+    background: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.login-container input {
+    width: 90%;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.login-container button {
+    padding: 10px 20px;
+    background: #007bff;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+.navbar {
+    background: #007bff;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.navbar .user-info a {
+    color: white;
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+.content {
+    padding: 20px;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+ul li {
+    margin: 10px 0;
+}
+
+.menu-icon-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--primary); /* warna biru */
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.kpi-update-badge {
+    background: white;
+    color: black;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.15);
+    min-width: 80px;
+}
+.kpi-update-badge strong {
+    font-size: 14px;
+    color: var(--primary);
+}
+/* Tombol collapse */
+.toggle-btn {
+    margin-left: auto;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--gray);
+    font-size: 0.9rem;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.toggle-btn:hover {
+    color: var(--primary);
+    transform: scale(1.1);
+}
+
+/* Saat card collapse */
+.note-card.collapsed textarea {
+    display: none;
+}

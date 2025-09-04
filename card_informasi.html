@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard KPI Perusahaan</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        .menu-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .menu-card {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .menu-card.kpi-card {
+            border-top: 4px solid #3498db;
+        }
+
+        .menu-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #3498db, #2c3e50);
+        }
+
+        .menu-icon {
+            background: #e8f4fc;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .menu-icon i {
+            font-size: 32px;
+            color: #3498db;
+        }
+
+        .menu-content h3 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .menu-description {
+            color: #7f8c8d;
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .menu-button {
+            display: inline-flex;
+            align-items: center;
+            background: #3498db;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: background 0.3s ease;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .menu-button i {
+            margin-right: 8px;
+        }
+
+        .menu-button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .update-container {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            padding: 25px;
+            margin-top: 25px;
+            border-left: 4px solid #3498db;
+        }
+
+        .update-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .update-title {
+            font-size: 1.3rem;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+        }
+
+        .update-title i {
+            margin-right: 10px;
+            color: #3498db;
+        }
+
+        .update-date {
+            background: #e8f4fc;
+            color: #3498db;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .update-content {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+        }
+
+        .update-item {
+            text-align: center;
+            flex: 1;
+            padding: 15px;
+        }
+
+        .update-item:not(:last-child) {
+            border-right: 1px solid #eaeff5;
+        }
+
+        .update-item h4 {
+            color: #7f8c8d;
+            font-size: 1rem;
+            margin-bottom: 10px;
+            font-weight: 500;
+        }
+
+        .update-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+
+        .update-value.bobot {
+            color: #3498db;
+        }
+
+        .update-value.score {
+            color: #2ecc71;
+        }
+
+        .update-actions {
+            display: flex;
+            justify-content: flex-end;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .btn i {
+            margin-right: 8px;
+        }
+
+        .btn-update {
+            background: #3498db;
+            color: white;
+            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-update:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .btn-history {
+            background: #f8f9fa;
+            color: #7f8c8d;
+            border: 1px solid #eaeff5;
+        }
+
+        .btn-history:hover {
+            background: #f1f5f9;
+            transform: translateY(-2px);
+        }
+
+        .history-container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .history-title {
+            font-size: 1.4rem;
+            color: #2c3e50;
+        }
+
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .history-table th {
+            background: #f8fafc;
+            color: #7f8c8d;
+            font-weight: 600;
+            text-align: left;
+            padding: 15px;
+            border-bottom: 2px solid #eaeff5;
+        }
+
+        .history-table td {
+            padding: 15px;
+            border-bottom: 1px solid #eaeff5;
+            color: #2c3e50;
+        }
+
+        .history-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .history-table tr:hover {
+            background: #f8fafc;
+        }
+
+        .score-value {
+            font-weight: 600;
+            color: #2ecc71;
+        }
+
+        .bobot-value {
+            font-weight: 600;
+            color: #3498db;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            .update-content {
+                flex-direction: column;
+            }
+            
+            .update-item:not(:last-child) {
+                border-right: none;
+                border-bottom: 1px solid #eaeff5;
+                margin-bottom: 15px;
+                padding-bottom: 20px;
+            }
+            
+            .update-actions {
+                flex-direction: column;
+            }
+            
+            .menu-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="header fade-in">
+            <h1>Dashboard KPI Perusahaan</h1>
+            <p>Pantau dan kelola indikator kinerja utama perusahaan secara real-time</p>
+        </div>
+        
+        <div class="menu-container">
+            <!-- KPI Card -->
+            <div class="menu-card kpi-card fade-in">
+                <div class="menu-icon">
+                    <i class="fas fa-chart-pie"></i>
+                </div>
+                <div class="menu-content">
+                    <h3 class="menu-title">Key Performance Indicators (KPI)</h3>
+                    <p class="menu-description">
+                        Pantau dan analisis indikator kinerja utama perusahaan secara real-time untuk pengambilan keputusan strategis.
+                    </p>
+                    <a href="lihat_kpi.php" class="menu-button">
+                        <i class="fas fa-eye"></i> Lihat KPI
+                    </a>
+                    
+                    <!-- Update Terakhir Section -->
+                    <div class="update-container fade-in">
+                        <div class="update-header">
+                            <h2 class="update-title"><i class="fas fa-sync-alt"></i> Update Terakhir KPI</h2>
+                            <span class="update-date">Diperbarui: 30 Juni 2023</span>
+                        </div>
+                        
+                        <div class="update-content">
+                            <div class="update-item">
+                                <h4>Bulan</h4>
+                                <div class="update-value">Juni</div>
+                            </div>
+                            
+                            <div class="update-item">
+                                <h4>Bobot</h4>
+                                <div class="update-value bobot">40.00</div>
+                            </div>
+                            
+                            <div class="update-item">
+                                <h4>Score</h4>
+                                <div class="update-value score">41.51</div>
+                            </div>
+                        </div>
+                        
+                        <div class="update-actions">
+                            <button class="btn btn-history">
+                                <i class="fas fa-history"></i> Lihat History
+                            </button>
+                            <button class="btn btn-update" onclick="openUpdateModal()">
+                                <i class="fas fa-edit"></i> Update KPI
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Other Cards -->
+            <div class="menu-card fade-in">
+                <div class="menu-icon" style="background: #fef6e8;">
+                    <i class="fas fa-chart-line" style="color: #f39c12;"></i>
+                </div>
+                <div class="menu-content">
+                    <h3 class="menu-title">Analisis Kinerja</h3>
+                    <p class="menu-description">
+                        Analisis mendalam terhadap kinerja departemen dan tim dengan berbagai metrik dan visualisasi data.
+                    </p>
+                    <a href="#" class="menu-button" style="background: #f39c12;">
+                        <i class="fas fa-chart-bar"></i> Lihat Analisis
+                    </a>
+                </div>
+            </div>
+            
+            <div class="menu-card fade-in">
+                <div class="menu-icon" style="background: #e8f7f0;">
+                    <i class="fas fa-bullseye" style="color: #27ae60;"></i>
+                </div>
+                <div class="menu-content">
+                    <h3 class="menu-title">Target & Objective</h3>
+                    <p class="menu-description">
+                        Tetapkan dan kelola target kinerja untuk berbagai departemen dan tim dalam perusahaan.
+                    </p>
+                    <a href="#" class="menu-button" style="background: #27ae60;">
+                        <i class="fas fa-bullseye"></i> Kelola Target
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- History Section -->
+        <div class="history-container fade-in">
+            <div class="history-header">
+                <h2 class="history-title">History KPI 2023</h2>
+                <div class="update-date">Januari - Juni 2023</div>
+            </div>
+            
+            <table class="history-table">
+                <thead>
+                    <tr>
+                        <th>Bulan</th>
+                        <th>Bobot</th>
+                        <th>Score</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Januari</td>
+                        <td class="bobot-value">40.00</td>
+                        <td class="score-value">40.46</td>
+                        <td><span style="color: #e74c3c;">&#9679; Di Bawah Target</span></td>
+                    </tr>
+                    <tr>
+                        <td>Februari</td>
+                        <td class="bobot-value">40.00</td>
+                        <td class="score-value">42.04</td>
+                        <td><span style="color: #2ecc71;">&#9679; Di Atas Target</span></td>
+                    </tr>
+                    <tr>
+                        <td>Maret</td>
+                        <td class="bobot-value">40.00</td>
+                        <td class="score-value">41.66</td>
+                        <td><span style="color: #2ecc71;">&#9679; Di Atas Target</span></td>
+                    </tr>
+                    <tr>
+                        <td>April</td>
+                        <td class="bobot-value">40.00</td>
+                        <td class="score-value">41.73</td>
+                        <td><span style="color: #2ecc71;">&#9679; Di Atas Target</span></td>
+                    </tr>
+                    <tr>
+                        <td>Mei</td>
+                        <td class="bobot-value">40.00</td>
+                        <td class="score-value">41.55</td>
+                        <td><span style="color: #2ecc71;">&#9679; Di Atas Target</span></td>
+                    </tr>
+                    <tr>
+                        <td>Juni</td>
+                        <td class="bobot-value">40.00</td>
+                        <td class="score-value">41.51</td>
+                        <td><span style="color: #2ecc71;">&#9679; Di Atas Target</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Update Modal -->
+    <div id="updateModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center;">
+        <div style="background: white; border-radius: 15px; width: 90%; max-width: 500px; padding: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.2);">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <h2 style="font-size: 1.5rem; color: #2c3e50;"><i class="fas fa-edit"></i> Update Data KPI</h2>
+                <button onclick="closeUpdateModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #7f8c8d;">&times;</button>
+            </div>
+            
+            <div style="margin-bottom: 25px;">
+                <label style="display: block; margin-bottom: 8px; color: #2c3e50; font-weight: 500;">Bulan</label>
+                <select style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #eaeff5; background: #f8fafc;">
+                    <option>Juli</option>
+                    <option>Agustus</option>
+                    <option>September</option>
+                    <option>Oktober</option>
+                    <option>November</option>
+                    <option>Desember</option>
+                </select>
+            </div>
+            
+            <div style="margin-bottom: 25px;">
+                <label style="display: block; margin-bottom: 8px; color: #2c3e50; font-weight: 500;">Bobot</label>
+                <input type="number" step="0.01" value="40.00" style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #eaeff5; background: #f8fafc;">
+            </div>
+            
+            <div style="margin-bottom: 30px;">
+                <label style="display: block; margin-bottom: 8px; color: #2c3e50; font-weight: 500;">Score</label>
+                <input type="number" step="0.01" value="41.51" style="width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #eaeff5; background: #f8fafc;">
+            </div>
+            
+            <div style="display: flex; justify-content: flex-end; gap: 15px;">
+                <button onclick="closeUpdateModal()" style="padding: 12px 25px; border-radius: 50px; font-weight: 500; cursor: pointer; background: #f8f9fa; color: #7f8c8d; border: 1px solid #eaeff5;">Batal</button>
+                <button onclick="saveUpdate()" style="padding: 12px 25px; border-radius: 50px; font-weight: 500; cursor: pointer; background: #3498db; color: white; border: none;">Simpan Update</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to open the update modal
+        function openUpdateModal() {
+            document.getElementById('updateModal').style.display = 'flex';
+        }
+        
+        // Function to close the update modal
+        function closeUpdateModal() {
+            document.getElementById('updateModal').style.display = 'none';
+        }
+        
+        // Function to simulate saving update
+        function saveUpdate() {
+            alert('Data KPI berhasil diperbarui!');
+            closeUpdateModal();
+            
+            // Here you would typically update the UI with new data
+            // For this example, we'll just show a confirmation
+        }
+        
+        // Add fade-in animation to elements
+        document.addEventListener('DOMContentLoaded', function() {
+            const elements = document.querySelectorAll('.fade-in');
+            elements.forEach((el, index) => {
+                setTimeout(() => {
+                    el.style.opacity = 1;
+                }, 150 * index);
+            });
+        });
+    </script>
+</body>
+</html>
